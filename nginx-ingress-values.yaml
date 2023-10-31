@@ -1,0 +1,54 @@
+controller:
+  replicaCount: 2  # Number of NGINX Ingress Controller replicas
+  ingressClass: "nginx"  # Set the ingress class
+  service:
+    enabled: true
+    type: LoadBalancer  # Use LoadBalancer service type or NodePort, depending on your environment
+    annotations:  # Add any annotations you need for the service
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+  config:
+    use-forwarded-headers: "true"  # Use X-Forwarded-For and X-Forwarded-Proto headers
+    use-proxy-protocol: "true"  # Enable PROXY protocol support
+    http-snippet: |  # Add custom configuration snippets if needed
+      location /custom-path {
+        proxy_set_header X-Custom-Header "custom-value";
+      }
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  admissionWebhooks:
+    enabled: false  # Disable admission webhooks if necessary
+
+rbac:
+  create: true  # Create RBAC resources
+  serviceAccountName: "nginx-ingress-controller"  # Service account name
+
+defaultBackend:
+  enabled: true  # Install the default backend for handling unconfigured routes
+  image:
+    repository: "k8s.gcr.io/defaultbackend"  # Use the default backend image
+    tag: "1.5"
+    pullPolicy: IfNotPresent
+
+image:
+  repository: "quay.io/kubernetes-ingress-controller/nginx-ingress-controller"  # NGINX Ingress Controller image repository
+  tag: "0.32.0"  # Specify the version/tag of NGINX Ingress Controller
+  pullPolicy: IfNotPresent
+
+updateStrategy:
+  type: "RollingUpdate"  # Update strategy for NGINX Ingress Controller
+
+# Specify additional ingress resource configurations if needed
+ingress:
+  enabled: true
+  annotations: {}  # Add any annotations for your ingress resources
+  paths:
+    - /
+  hosts:
+    - example.com
+  tls: []
+
