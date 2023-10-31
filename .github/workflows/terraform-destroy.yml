@@ -25,4 +25,4 @@ jobs:
 
       - name: cleanup terraform state
         run: |
-          aws s3 rm s3://s3-terraform-statefile-as5.2.1.2/terraform.tfstate
+          aws s3 rm s3://s3-terraform-statefile-as5.1.1.2/terraform.tfstate
