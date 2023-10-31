@@ -42,5 +42,5 @@ provider "kubernetes" {
 }
 
 provider "aws" {
-  region = "ap-south-1"
+  region = var.aws_region
 }
