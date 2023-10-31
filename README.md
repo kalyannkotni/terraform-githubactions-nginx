@@ -1,1 +1,1 @@
-Deploy nginx helm chart on EKS with terraform (AWS code pipeline & gtihub workflow )
+Deploy nginx helm chart on EKS with terraform gtihub workflow
